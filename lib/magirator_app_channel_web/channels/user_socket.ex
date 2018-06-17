@@ -1,8 +1,10 @@
 defmodule MagiratorAppChannelWeb.UserSocket do
   use Phoenix.Socket
+  alias MagiratorAppChannel.Auth
+  require Logger
 
   ## Channels
-  # channel "room:*", MagiratorAppChannelWeb.RoomChannel
+  channel "app:main", MagiratorAppChannelWeb.MainChannel
 
   ## Transports
   transport :websocket, Phoenix.Transports.WebSocket
@@ -19,9 +21,27 @@ defmodule MagiratorAppChannelWeb.UserSocket do
   #
   # See `Phoenix.Token` documentation for examples in
   # performing token verification on connect.
+
+  def connect(%{"user" => user, "pwd" => pwd}, socket) do
+
+    Logger.debug "user:#{user}, pwd:#{pwd}"
+    case Auth.authenticate(user, pwd) do
+      :ok ->
+        {:ok, socket}
+      _ ->
+        :error
+    end
+  end
+
   def connect(_params, socket) do
     {:ok, socket}
   end
+
+  def connect(_params, _socket) do
+    :error
+  end
+
+
 
   # Socket id's are topics that allow you to identify all sockets for a given user:
   #

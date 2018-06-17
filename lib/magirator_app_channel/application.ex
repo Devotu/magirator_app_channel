@@ -12,6 +12,7 @@ defmodule MagiratorAppChannel.Application do
       supervisor(MagiratorAppChannelWeb.Endpoint, []),
       # Start your own worker by calling: MagiratorAppChannel.Worker.start_link(arg1, arg2, arg3)
       # worker(MagiratorAppChannel.Worker, [arg1, arg2, arg3]),
+      worker(Bolt.Sips, [Application.get_env(:bolt_sips, Bolt)])
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

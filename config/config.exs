@@ -18,6 +18,14 @@ config :logger, :console,
   format: "$time $metadata[$level] $message\n",
   metadata: [:request_id]
 
+# Configures Neo4j driver
+config :bolt_sips, Bolt,
+  hostname: 'localhost',
+  basic_auth: [username: "neo4j", password: "neo4j400"],
+  port: 7401,
+  pool_size: 5,
+  max_overflow: 1
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env}.exs"
