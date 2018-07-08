@@ -1,17 +1,18 @@
 defmodule MagiratorAppChannelWeb.MainChannel do
     use Phoenix.Channel
 
-    alias MagiratorAppChannel.Utils
     alias Bolt.Sips, as: Bolt
 
     require Logger
 
     def join("app:main", _message, socket) do
         socket = assign(socket, :user, "mrX")
+        Logger.debug "join:ok"
         {:ok, %{test: "joined"}, socket}
     end
 
     def join("app:" <> _id, _params, _socket) do
+        Logger.debug "join:specific"
         {:error, %{reason: "unauthorized"}}
     end
 
@@ -37,6 +38,12 @@ defmodule MagiratorAppChannelWeb.MainChannel do
         Logger.debug( Kernel.inspect( baz ) )
     
         broadcast(socket, "new_msg", %{msg: msg, user: user, data: bar})
+        {:reply, :ok, socket}
+    end
+
+    def handle_in("new_msg", _, socket) do
+        Logger.debug( "Got nothing" )    
+        broadcast(socket, "new_msg", "Danothing")
         {:reply, :ok, socket}
     end
 
