@@ -28,7 +28,7 @@ defmodule MagiratorAppChannelWeb.UserSocket do
     case Auth.authenticate(user, pwd) do
       :ok ->
         Logger.debug "connection ok"
-        {:ok, socket}
+        {:ok, assign(socket, :user, user)}
       _ ->
         Logger.debug "authentication error"
         :error

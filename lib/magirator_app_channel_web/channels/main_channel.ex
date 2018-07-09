@@ -6,7 +6,6 @@ defmodule MagiratorAppChannelWeb.MainChannel do
     require Logger
 
     def join("app:main", _message, socket) do
-        socket = assign(socket, :user, "mrX")
         Logger.debug "join:ok"
         {:ok, %{test: "joined"}, socket}
     end
@@ -20,7 +19,7 @@ defmodule MagiratorAppChannelWeb.MainChannel do
         user = socket.assigns[:user]
 
         query = """
-        MATCH (n) WHERE id(n) = 266 RETURN n.name as name, n.created as id
+        MATCH (n) WHERE id(n) = 164 RETURN n.name as name, n.created as id
         """
 
         now = now()
