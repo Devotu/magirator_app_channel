@@ -4,7 +4,7 @@ defmodule MagiratorAppChannelWeb.UserSocket do
   require Logger
 
   ## Channels
-  channel "app:main", MagiratorAppChannelWeb.MainChannel
+  channel "app:*", MagiratorAppChannelWeb.MainChannel
 
   ## Transports
   transport :websocket, Phoenix.Transports.WebSocket
@@ -25,10 +25,13 @@ defmodule MagiratorAppChannelWeb.UserSocket do
   def connect(%{"user" => user, "pwd" => pwd}, socket) do
 
     Logger.debug "user:#{user}, pwd:#{pwd}"
+
     case Auth.authenticate(user, pwd) do
-      :ok ->
-        Logger.debug "connection ok"
-        {:ok, assign(socket, :user, user)}
+      
+      {:ok, user_id} ->
+        Logger.debug "connection ok"        
+        {:ok, assign(socket, :user_id, user_id)}
+      
       _ ->
         Logger.debug "authentication error"
         :error
@@ -52,5 +55,8 @@ defmodule MagiratorAppChannelWeb.UserSocket do
   #     MagiratorAppChannelWeb.Endpoint.broadcast("user_socket:#{user.id}", "disconnect", %{})
   #
   # Returning `nil` makes this socket anonymous.
+  
+  def id(socket), do: "user_socket:#{socket.assigns.user_id}"
+  
   def id(_socket), do: nil
 end

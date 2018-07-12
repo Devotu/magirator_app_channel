@@ -22,23 +22,24 @@ defmodule MagiratorAppChannel.Auth do
 
         result = Bolt.query!(Bolt.conn, query)
         Logger.debug( "Result:" )
-        Logger.debug( Kernel.inspect( result ) )
+        Logger.debug( Kernel.inspect( result ) )        
 
-        signIn(result)
+        getId(result)
     end
 
-    defp signIn([_nodes]) do
-        Logger.debug( "signIn(nodes)" )
-        :ok
+    defp getId(result) do
+
+        [nodes] = result
+        user = nodes["u"]
+        %{id: user_id} = user
+
+        Logger.debug( "got user_id: #{user_id}" )
+
+        {:ok, user_id}
     end
 
-    defp signIn([]) do
-        Logger.debug( "signIn([])" )
-        :error
-    end
-
-    defp signIn(_) do
-        Logger.debug( "signIn(_)" )
+    defp getId(_) do
+        Logger.debug( "getId(_)" )
         :error
     end
 end
