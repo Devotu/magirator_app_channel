@@ -11,7 +11,8 @@ defmodule MagiratorAppChannelWeb.MainChannel do
         {:ok, %{test: "joined"}, socket}
     end
 
-    def join("app:user", _params, socket) do
+    def join("app:" <> user, _params, socket) do
+        Logger.debug("Joining channel app:#{user}");
         join(socket, socket.assigns.user_id)
     end
 
