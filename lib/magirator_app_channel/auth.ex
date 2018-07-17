@@ -20,9 +20,7 @@ defmodule MagiratorAppChannel.Auth do
             u,d
         """
 
-        result = Bolt.query!(Bolt.conn, query)
-        Logger.debug( "Result:" )
-        Logger.debug( Kernel.inspect( result ) )        
+        result = Bolt.query!(Bolt.conn, query)     
 
         getId(result)
     end
@@ -33,13 +31,10 @@ defmodule MagiratorAppChannel.Auth do
         user = nodes["u"]
         %{id: user_id} = user
 
-        Logger.debug( "got user_id: #{user_id}" )
-
         {:ok, user_id}
     end
 
     defp getId(_) do
-        Logger.debug( "getId(_)" )
         :error
     end
 end

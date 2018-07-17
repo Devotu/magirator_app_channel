@@ -51,7 +51,26 @@ defmodule MagiratorAppChannelWeb.MainChannel do
         # Logger.debug( Kernel.inspect( baz ) )
     
         # broadcast(socket, "new_msg", %{msg: msg, user: user, data: bar})
-        broadcast(socket, "new_msg", %{msg: "msg", user_id: user_id, data: "bar"})
+        broadcast(socket, "new_msg", %{msg: "msg", user_id: user_id, data: now})
+        {:reply, :ok, socket}
+    end
+
+
+    def handle_in("post", %{"name" => name, "theme" => theme}, socket) do
+        user_id = socket.assigns[:user_id]
+
+        response = "Got deck #{name} with theme #{theme}"
+
+        broadcast(socket, "new_msg", %{msg: response, user_id: user_id, data: now})
+        {:reply, :ok, socket}
+    end
+
+    def handle_in("post", content, socket) do
+        user_id = socket.assigns[:user_id]
+
+        contents = Kernel.inspect( content )
+
+        broadcast(socket, "new_msg", %{msg: contents, user_id: user_id, data: now})
         {:reply, :ok, socket}
     end
 
