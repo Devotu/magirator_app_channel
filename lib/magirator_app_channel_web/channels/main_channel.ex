@@ -2,6 +2,9 @@ defmodule MagiratorAppChannelWeb.MainChannel do
     use Phoenix.Channel
 
     alias Bolt.Sips, as: Bolt
+    
+    alias MagiratorAppChannel.Packet, as: Packet
+    import MagiratorAppChannelWeb.ActionRouter
 
     require Logger
 
@@ -56,7 +59,7 @@ defmodule MagiratorAppChannelWeb.MainChannel do
     end
 
 
-    def handle_in("post", %{"name" => name, "theme" => theme}, socket) do
+    def handle_in("newdeck", %{"name" => name, "theme" => theme}, socket) do
         user_id = socket.assigns[:user_id]
 
         response = "Got deck #{name} with theme #{theme}"
@@ -65,18 +68,22 @@ defmodule MagiratorAppChannelWeb.MainChannel do
         {:reply, :ok, socket}
     end
 
-    def handle_in("post", content, socket) do
+    def handle_in(action, data, socket) do        
         user_id = socket.assigns[:user_id]
 
-        contents = Kernel.inspect( content )
+        packet = %Packet{ action: action, data_in: data, data_out: "data_out" }
 
-        broadcast(socket, "new_msg", %{msg: contents, user_id: user_id, data: now})
-        {:reply, :ok, socket}
-    end
+        # kalla på actionrouter.route( action, data ) och ta hand om response
 
-    def handle_in("new_msg", _, socket) do
-        Logger.debug( "Got nothing" )    
-        broadcast(socket, "new_msg", "Danothing")
+        { status, msg } = route( action, packet )
+
+        case status do
+            :ok ->
+                broadcast(socket, "new_msg", %{msg: msg, user_id: user_id, data: now})
+            _ ->
+                broadcast(socket, "new_msg", %{msg: "Failure", user_id: user_id, data: now})
+        end
+
         {:reply, :ok, socket}
     end
 
