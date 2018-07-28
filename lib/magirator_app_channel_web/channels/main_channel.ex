@@ -4,7 +4,7 @@ defmodule MagiratorAppChannelWeb.MainChannel do
     alias Bolt.Sips, as: Bolt
     
     alias MagiratorAppChannel.Packet, as: Packet
-    import MagiratorAppChannelWeb.ActionRouter
+    import MagiratorAppChannel.DomainRouter
 
     require Logger
 
@@ -68,14 +68,18 @@ defmodule MagiratorAppChannelWeb.MainChannel do
         {:reply, :ok, socket}
     end
 
-    def handle_in(action, data, socket) do        
+    @doc """
+    String domain:action, mr.data.struct data, socket socket
+    """
+    def handle_in(domac, data, socket) do        
         user_id = socket.assigns[:user_id]
 
-        packet = %Packet{ action: action, data_in: data, data_out: "data_out" }
+        [domain, action] = String.split(domac, ":")
 
-        # kalla på actionrouter.route( action, data ) och ta hand om response
+        packet = %Packet{ domain: domain, action: action, data_in: data }
 
-        { status, msg } = route( action, packet )
+        # kalla på domainrouter.route( domain, data ) och ta hand om response
+        { status, msg } = route( packet )
 
         case status do
             :ok ->
