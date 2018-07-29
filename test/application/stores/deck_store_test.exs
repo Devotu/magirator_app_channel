@@ -6,7 +6,7 @@ defmodule DeckStoreTest do
     import Ecto.Changeset
 
     test "insert deck" do
-        deck_changeset = Deck.changeset( %Deck{ }, %{ name: "namy", theme: "themy"} )
+        deck_changeset = Deck.changeset( %Deck{ }, %{ name: "DeckStoreTest", theme: "themy"} )
         { status, id } = insert( apply_changes( deck_changeset ), 1 )
         assert :ok == status
         assert is_number id

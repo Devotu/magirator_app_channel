@@ -85,7 +85,7 @@ defmodule MagiratorAppChannelWeb.MainChannel do
             :ok ->
                 broadcast(socket, "new_msg", %{msg: msg, user_id: user_id, data: now})
             _ ->
-                broadcast(socket, "new_msg", %{msg: "Failure", user_id: user_id, data: now})
+                broadcast(socket, "new_msg", %{msg: msg, user_id: user_id, data: now})
         end
 
         {:reply, :ok, socket}
