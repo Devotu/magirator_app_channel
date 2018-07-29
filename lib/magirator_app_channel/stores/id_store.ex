@@ -2,7 +2,7 @@ defmodule MagiratorAppChannel.IdStore do
 
     alias Bolt.Sips, as: Bolt
     
-    def next do
+    def nextId() do
         
         query = """
         MERGE (id:GlobalUniqueId)
@@ -13,7 +13,7 @@ defmodule MagiratorAppChannel.IdStore do
         
         result = Bolt.query!(Bolt.conn, query)
         [ row ] = result
-        { id } = [ { row ["generated_id"] } ]
+        [{ id }] = [ { row["generated_id"] } ]
         { :ok, id }
     end
 end
