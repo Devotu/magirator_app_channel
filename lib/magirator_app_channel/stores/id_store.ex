@@ -2,7 +2,7 @@ defmodule MagiratorAppChannel.IdStore do
 
     alias Bolt.Sips, as: Bolt
     
-    def nextId() do
+    def next_id() do
         
         query = """
         MERGE (id:GlobalUniqueId)

@@ -76,7 +76,7 @@ defmodule MagiratorAppChannelWeb.MainChannel do
 
         [domain, action] = String.split(domac, ":")
 
-        packet = %Packet{ domain: domain, action: action, data_in: data }
+        packet = %Packet{ user_id: user_id, domain: domain, action: action, data_in: data }
 
         # kalla på domainrouter.route( domain, data ) och ta hand om response
         { status, msg } = route( packet )

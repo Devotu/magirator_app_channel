@@ -14,8 +14,8 @@ defmodule MagiratorAppChannel.DomainRouter do
         DeckController.doAction( packet.action, packet )
     end
 
-    defp _route( _, _ ) do
+    defp _route( _domain, _packet ) do
         
-        {:error, "No Matching route"}
+        { :error, :no_domain_match }
     end
 end
