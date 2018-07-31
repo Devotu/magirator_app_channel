@@ -3,7 +3,7 @@ defmodule MagiratorAppChannelWeb.MainChannel do
 
     alias Bolt.Sips, as: Bolt
     
-    alias MagiratorAppChannel.Packet, as: Packet
+    alias MagiratorAppChannel.RoutingPacket
     import MagiratorAppChannel.DomainRouter
 
     require Logger
@@ -76,10 +76,10 @@ defmodule MagiratorAppChannelWeb.MainChannel do
 
         [domain, action] = String.split(domac, ":")
 
-        packet = %Packet{ user_id: user_id, domain: domain, action: action, data_in: data }
+        routing_packet = %RoutingPacket{ user_id: user_id, domain: domain, action: action, data_in: data }
 
         # kalla på domainrouter.route( domain, data ) och ta hand om response
-        { status, msg } = route( packet )
+        { status, msg } = route( routing_packet )
 
         case status do
             :ok ->

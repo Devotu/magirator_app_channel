@@ -1,17 +1,20 @@
 defmodule MagiratorAppChannel.DomainRouter do
 
-    alias MagiratorAppChannel.DeckController, as: DeckController
+    alias MagiratorAppChannel.DeckController
     
-    def route( packet ) do
+    require Logger
 
-        IO.puts "Routing to #{packet.domain}"
+    def route( routing_packet ) do
 
-        _route( packet.domain, packet )
+        Logger.debug "Routing to #{routing_packet.domain}"
+
+        _route( routing_packet.domain, routing_packet )
     end
 
-    defp _route( "deck:" <> domain, packet ) do
+    defp _route( "deck", routing_packet ) do
         
-        DeckController.doAction( packet.action, packet )
+        Logger.debug "doing deck action #{routing_packet.action}"
+        DeckController.doAction( routing_packet.action, routing_packet )
     end
 
     defp _route( _domain, _packet ) do
