@@ -4,9 +4,9 @@ defmodule MagiratorAppChannel.Auth do
     
     require Logger
     
-    def authenticate(user, pwd) do
+    def authenticate( user, pwd ) do
 
-        hashword = :crypto.hash( :sha512, pwd) 
+        hashword = :crypto.hash( :sha512, pwd ) 
             |> Base.encode16
             |> String.downcase
 
@@ -20,21 +20,13 @@ defmodule MagiratorAppChannel.Auth do
             u,d
         """
 
-        result = Bolt.query!(Bolt.conn, query)     
+        result = Bolt.query!(Bolt.conn, query)
 
-        getId(result)
-    end
-
-    defp getId(result) do
-
-        [nodes] = result
-        user = nodes["u"]
-        %{id: user_id} = user
-
-        {:ok, user_id}
-    end
-
-    defp getId(_) do
-        :error
+        case result do
+            [nodes] ->
+                { :ok, nodes["u"].properties["id"] }
+            _ -> 
+                { :error, :invalid_credentials }
+        end
     end
 end
