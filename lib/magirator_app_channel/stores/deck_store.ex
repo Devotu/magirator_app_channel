@@ -28,7 +28,9 @@ defmodule MagiratorAppChannel.DeckStore do
            red: #{ deck.red }, 
            green: #{ deck.green }, 
            blue: #{ deck.blue }, 
-           colorless: #{ deck.colorless } 
+           colorless: #{ deck.colorless }, 
+           budget: #{ deck.budget }, 
+           worth: #{ deck.worth } 
          })  
          RETURN n.id as id;
         """

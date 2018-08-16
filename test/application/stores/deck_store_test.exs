@@ -17,7 +17,7 @@ defmodule DeckStoreTest do
             blue: :true, 
             colorless: :false, 
             budget: 18, 
-            worth: 15
+            worth: 16.7
             } )
         { status, id } = insert( apply_changes( deck_changeset ), 1 )
         assert :ok == status
