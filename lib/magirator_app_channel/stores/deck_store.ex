@@ -23,12 +23,12 @@ defmodule MagiratorAppChannel.DeckStore do
            name: "#{ deck.name }", 
            format: "#{ "Standard" }", 
            theme: "#{ deck.theme }", 
-           black: #{ 1 }, 
-           white: #{ 1 }, 
-           red: #{ 0 }, 
-           green: #{ 0 }, 
-           blue: #{ 0 }, 
-           colorless: #{ 0 } 
+           black: #{ deck.black }, 
+           white: #{ deck.white }, 
+           red: #{ deck.red }, 
+           green: #{ deck.green }, 
+           blue: #{ deck.blue }, 
+           colorless: #{ deck.colorless } 
          })  
          RETURN n.id as id;
         """
