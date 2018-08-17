@@ -9,7 +9,19 @@ defmodule DeckTest do
     end
 
     test "new deck changeset" do        
-        dc = Deck.changeset( %Deck{ }, %{ name: "deck1", theme: "test" } )
+        dc = Deck.changeset( %Deck{ }, %{
+            "black" => true, 
+            "blue" => true, 
+            "budget" => 0, 
+            "colorless" => false, 
+            "format" => "Standard", 
+            "green" => false, 
+            "name" => "Create", 
+            "red" => true, 
+            "theme" => "Deck", 
+            "white" => false, 
+            "worth" => 0
+        } )
         assert dc.valid?
     end
 
