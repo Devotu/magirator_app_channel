@@ -1,8 +1,6 @@
 defmodule MagiratorAppChannelWeb.MainChannel do
     use Phoenix.Channel
 
-    alias Bolt.Sips, as: Bolt
-    
     alias MagiratorAppChannel.RoutingPacket
     import MagiratorAppChannel.DomainRouter
 
@@ -19,15 +17,15 @@ defmodule MagiratorAppChannelWeb.MainChannel do
         join(socket, socket.assigns.user_id)
     end
 
-    defp join(socket, user_id) do
+    defp join( socket, user_id ) when is_number(user_id) do
         {:ok, %{}, socket}
     end
 
-    defp join(socket, nil) do        
+    defp join( _, nil ) do        
         {:error, %{reason: "unauthorized"}}
     end
 
-    defp join(socket, nil) do        
+    defp join( _, _ ) do        
         {:error, %{reason: "unknown error"}}
     end
 
@@ -54,7 +52,7 @@ defmodule MagiratorAppChannelWeb.MainChannel do
         # Logger.debug( Kernel.inspect( baz ) )
     
         # broadcast(socket, "new_msg", %{msg: msg, user: user, data: bar})
-        broadcast(socket, "new_msg", %{msg: "msg", user_id: user_id, data: now})
+        broadcast(socket, "new_msg", %{msg: msg, user_id: user_id, data: now()})
         {:reply, :ok, socket}
     end
 
@@ -64,7 +62,7 @@ defmodule MagiratorAppChannelWeb.MainChannel do
 
         response = "Got deck #{name} with theme #{theme}"
 
-        broadcast(socket, "new_msg", %{msg: response, user_id: user_id, data: now})
+        broadcast(socket, "new_msg", %{msg: response, user_id: user_id, data: now()})
         {:reply, :ok, socket}
     end
 
@@ -82,10 +80,12 @@ defmodule MagiratorAppChannelWeb.MainChannel do
         { status, msg } = route( routing_packet )
 
         case status do
+            :data ->
+                broadcast(socket, "data", %{data: msg, user_id: user_id, description: domac})
             :ok ->
-                broadcast(socket, "new_msg", %{msg: msg, user_id: user_id, data: now})
+                broadcast(socket, "new_msg", %{msg: msg, user_id: user_id, data: now()})
             _ ->
-                broadcast(socket, "new_msg", %{msg: msg, user_id: user_id, data: now})
+                broadcast(socket, "new_msg", %{msg: msg, user_id: user_id, data: now()})
         end
 
         {:reply, :ok, socket}

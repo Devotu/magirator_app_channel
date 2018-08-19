@@ -16,9 +16,9 @@ defmodule MagiratorAppChannel.Deck do
         field :worth, :float
     end
 
-    def changeset(deck, params \\%{}) do
+    def changeset( deck, params \\%{} ) do
         deck
-        |> cast(params, [:name, :theme, :format, :black, :white, :red, :green, :blue, :colorless, :budget, :worth])
+        |> cast(params, [:id, :name, :theme, :format, :black, :white, :red, :green, :blue, :colorless, :budget, :worth])
         |> validate_required([:name, :theme, :format, :black, :white, :red, :green, :blue, :colorless])
     end
 

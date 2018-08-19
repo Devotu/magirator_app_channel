@@ -33,10 +33,10 @@ defmodule DeckControllerTest do
         assert :invalid_data == msg
     end
 
-    # test "list decks" do
-    #     routing_packet = %RoutingPacket{ user_id: 1, data_in: %{} }
-    #     { status, %{ id: id } } = doAction( "list", routing_packet )
-    #     assert :not_implemented == status
-    #     assert is_number id
-    # end
+    test "list decks" do
+        routing_packet = %RoutingPacket{ user_id: 1, data_in: %{} }
+        { status, data } = doAction( "list", routing_packet )
+        assert :data == status
+        assert is_list data
+    end
 end

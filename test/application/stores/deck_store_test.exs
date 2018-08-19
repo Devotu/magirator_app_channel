@@ -23,4 +23,17 @@ defmodule DeckStoreTest do
         assert :ok == status
         assert is_number id
     end
+
+
+    test "select all decks user" do
+        { status, decks } = selectAllByUser 1
+        assert :ok == status
+        assert is_list decks
+    end
+
+    test "select all decks user with no decks" do
+        { status, msg } = selectAllByUser 99
+        assert :ok == status
+        assert :no_data == msg
+    end
 end
