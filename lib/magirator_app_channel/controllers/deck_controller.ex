@@ -4,6 +4,7 @@ defmodule MagiratorAppChannel.DeckController do
   import MagiratorAppChannel.DeckStore
   alias MagiratorAppChannel.Deck
   alias MagiratorAppChannel.Streamliner
+  require Logger
 
   def doAction( action, data ) do
 
@@ -39,8 +40,9 @@ defmodule MagiratorAppChannel.DeckController do
     { :data, Streamliner.changesetStructListToMapList store_result }
   end
 
-  defp _doAction( _, _ ) do
+  defp _doAction( action, _ ) do
 
+    Logger.debug "No such action: #{action}"
     { :error, :no_such_action }
   end
 

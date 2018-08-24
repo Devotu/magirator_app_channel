@@ -72,10 +72,6 @@ defmodule MagiratorAppChannel.DeckStore do
         result = Bolt.query!(Bolt.conn, query)
         decks = nodesToDecks result
 
-        Logger.debug " ---- "
-
-        Logger.debug Kernel.inspect decks
-
         if Enum.empty? decks do
             { :ok, :no_data }
         else 
@@ -90,11 +86,7 @@ defmodule MagiratorAppChannel.DeckStore do
 
     defp nodeToDeck( node ) do
 
-        # Map.merge( node["d"].properties, node["data"].properties )
         deck_data = Map.merge( node["d"].properties, node["data"].properties )
-
-        Logger.debug " -z-z-z-z-z-"
-        Logger.debug Kernel.inspect deck_data
 
         deck_changeset = Deck.changeset( %Deck{ }, deck_data )
 
