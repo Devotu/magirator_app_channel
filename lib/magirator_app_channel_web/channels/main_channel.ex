@@ -69,10 +69,10 @@ defmodule MagiratorAppChannelWeb.MainChannel do
     @doc """
     String domain:action, mr.data.struct data, socket socket
     """
-    def handle_in(domac, data, socket) do        
+    def handle_in(domain_action, data, socket) do        
         user_id = socket.assigns[:user_id]
 
-        [domain, action] = String.split(domac, ":")
+        [domain, action] = String.split(domain_action, ":")
 
         routing_packet = %RoutingPacket{ user_id: user_id, domain: domain, action: action, data_in: data }
 
@@ -81,7 +81,7 @@ defmodule MagiratorAppChannelWeb.MainChannel do
 
         case status do
             :data ->
-                broadcast(socket, "data", %{data: msg, user_id: user_id, description: domac})
+                broadcast(socket, "data", %{data: msg, user_id: user_id, description: domain_action})
             :ok ->
                 broadcast(socket, "new_msg", %{msg: msg, user_id: user_id, data: now()})
             _ ->

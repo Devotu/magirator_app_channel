@@ -88,7 +88,7 @@ defmodule MagiratorAppChannel.DeckStore do
 
         deck_data = Map.merge( node["d"].properties, node["data"].properties )
 
-        deck_changeset = Deck.changeset( %Deck{ }, deck_data )
+        deck_changeset = Deck.changeset( %Deck{}, deck_data )
 
         if deck_changeset.valid? do
             apply_changes deck_changeset

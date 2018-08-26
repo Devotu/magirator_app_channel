@@ -16,7 +16,7 @@ defmodule DeckTest do
             "colorless" => false, 
             "format" => "Standard", 
             "green" => false, 
-            "name" => "Create", 
+            "name" => "New deck changeset", 
             "red" => true, 
             "theme" => "Deck", 
             "white" => false, 

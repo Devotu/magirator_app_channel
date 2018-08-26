@@ -2,6 +2,7 @@ defmodule MagiratorAppChannel.DeckController do
 
   import Ecto.Changeset
   import MagiratorAppChannel.DeckStore
+  alias MagiratorAppChannel.GameStore
   alias MagiratorAppChannel.Deck
   alias MagiratorAppChannel.Streamliner
   require Logger
@@ -36,6 +37,16 @@ defmodule MagiratorAppChannel.DeckController do
   defp _doAction( "list", routing_packet) do
     
     { :ok, store_result } = selectAllByUser routing_packet.user_id
+
+    { :data, Streamliner.changesetStructListToMapList store_result }
+  end
+
+  defp _doAction( "games", routing_packet) do
+    
+    { status, store_result } = GameStore.selectAllByDeck routing_packet.data_in["deck_id"]
+
+    Logger.debug Kernel.inspect store_result
+    Logger.debug Kernel.inspect status
 
     { :data, Streamliner.changesetStructListToMapList store_result }
   end

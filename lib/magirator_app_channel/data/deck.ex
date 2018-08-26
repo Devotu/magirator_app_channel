@@ -14,11 +14,12 @@ defmodule MagiratorAppChannel.Deck do
         field :colorless, :boolean
         field :budget, :float
         field :worth, :float
+        field :created, :integer
     end
 
     def changeset( deck, params \\%{} ) do
         deck
-        |> cast(params, [:id, :name, :theme, :format, :black, :white, :red, :green, :blue, :colorless, :budget, :worth])
+        |> cast(params, [:id, :name, :theme, :format, :black, :white, :red, :green, :blue, :colorless, :budget, :worth, :created])
         |> validate_required([:name, :theme, :format, :black, :white, :red, :green, :blue, :colorless])
     end
 
