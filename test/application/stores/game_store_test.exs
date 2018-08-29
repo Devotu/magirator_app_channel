@@ -2,7 +2,6 @@ defmodule GameStoreTest do
     use ExUnit.Case
 
     import MagiratorAppChannel.GameStore
-    import Ecto.Changeset
 
     alias MagiratorAppChannel.GameResultSet
 
@@ -17,6 +16,6 @@ defmodule GameStoreTest do
     test "select all games from deck with no games" do
         { status, msg } = selectAllByDeck 99
         assert :ok == status
-        assert :no_data == msg
+        assert [] == msg
     end
 end

@@ -50,13 +50,7 @@ defmodule MagiratorAppChannel.GameStore do
         result = Bolt.query!(Bolt.conn, query)
         gamesets = nodesToGameResultSets result
 
-        if Enum.empty? gamesets do
-            { :ok, :no_data }
-        else 
-            Logger.debug Kernel.inspect "------------ gamesets ---------------"
-            Logger.debug Kernel.inspect gamesets
-            { :ok, gamesets }
-        end
+        { :ok, gamesets }
     end
 
 

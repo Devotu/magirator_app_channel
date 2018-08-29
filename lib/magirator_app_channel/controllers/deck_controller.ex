@@ -45,9 +45,6 @@ defmodule MagiratorAppChannel.DeckController do
     
     { status, store_result } = GameStore.selectAllByDeck routing_packet.data_in["deck_id"]
 
-    Logger.debug Kernel.inspect store_result
-    Logger.debug Kernel.inspect status
-
     { :data, Streamliner.changesetStructListToMapList store_result }
   end
 

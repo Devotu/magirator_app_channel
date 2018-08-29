@@ -39,4 +39,11 @@ defmodule DeckControllerTest do
         assert :data == status
         assert is_list data
     end
+
+    # test "list games" do
+    #     routing_packet = %RoutingPacket{ user_id: 1, data_in: %{ "deck_id": 20 } }
+    #     { status, data } = doAction( "games", routing_packet )
+    #     assert :data == status
+    #     assert is_list data
+    # end
 end
