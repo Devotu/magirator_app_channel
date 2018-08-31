@@ -7,4 +7,5 @@ config :magirator_app_channel, MagiratorAppChannelWeb.Endpoint,
   server: false
 
 # Print only warnings and errors during test
+# :warn = only warnings, :debug = including Logger.debug 
 config :logger, level: :warn
