@@ -36,13 +36,9 @@ defmodule MagiratorAppChannel.DeckStore do
          })  
          RETURN n.id as id;
         """
-
-        Logger.debug "query:#{query}"
         
         result = Bolt.query!(Bolt.conn, query)
-        Logger.debug( Kernel.inspect( result ) )
         [ row ] = result
-        Logger.debug( Kernel.inspect( row ) )
         { created_id } = { row["id"] }
 
         case created_id == generated_id do
@@ -54,7 +50,7 @@ defmodule MagiratorAppChannel.DeckStore do
     end
 
 
-    def selectAllByUser( user_id ) do
+    def select_all_by_user( user_id ) do
 
         query = """
         MATCH 
@@ -66,35 +62,24 @@ defmodule MagiratorAppChannel.DeckStore do
         RETURN 
          d, data
         """
-
-        Logger.debug "query:#{query}"
         
         result = Bolt.query!(Bolt.conn, query)
         decks = nodesToDecks result
 
-        if Enum.empty? decks do
-            { :ok, :no_data }
-        else 
-            { :ok, decks }
-        end
+        { :ok, decks }
     end
 
     def select_all_by_player( player_id ) do
 
         query = """
         MATCH 
-         (p:Player)
-         -[:Possess]->
-         (d:Deck)
-         -[:Currently]->
-         (data:Data) 
+         (p:Player)-[:Possess]->(d:Deck)
+         -[:Currently]->(data:Data) 
         WHERE 
          p.id = #{ player_id } 
         RETURN 
          d, data
         """
-
-        Logger.debug "query:#{query}"
         
         result = Bolt.query!(Bolt.conn, query)
         decks = nodesToDecks result

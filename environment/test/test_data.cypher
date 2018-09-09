@@ -3,7 +3,7 @@ MATCH (n) DETACH DELETE n;
 CREATE (id:GlobalUniqueId { count:1000 });
 
 CREATE (n:User:Active { id:1 }) -[:Currently]-> (d:Data { created:TIMESTAMP(), name:"Adam", password:"47b2686cbbc5aba83021072684c76602c4aef2aa22c5546987045817d10aef5a169ca7d77731cf334ae32c22bcaa8d6e57037e4456131cf1bbef9af30a08ace0" });
-MATCH (a:User) WHERE a.id = 1 CREATE (a)-[:Is]->(n:Player:Active { id:10 }) -[:Currently]-> (d:Data { created:TIMESTAMP(), name:"David" });
+MATCH (a:User) WHERE a.id = 1 CREATE (a)-[:Is]->(n:Player:Active { id:10 }) -[:Currently]-> (d:Data { created:TIMESTAMP(), name:"Erlango" });
 
 CREATE (n:User:Active { id:2 }) -[:Currently]-> (d:Data { created:TIMESTAMP(), name:"Bertil", password:"47b2686cbbc5aba83021072684c76602c4aef2aa22c5546987045817d10aef5a169ca7d77731cf334ae32c22bcaa8d6e57037e4456131cf1bbef9af30a08ace0" });
 MATCH (a:User) WHERE a.id = 2 CREATE (a)-[:Is]->(n:Player:Active { id:11 }) -[:Currently]-> (d:Data { created:TIMESTAMP(), name:"Erik" });

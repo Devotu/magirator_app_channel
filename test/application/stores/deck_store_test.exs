@@ -27,15 +27,16 @@ defmodule DeckStoreTest do
 
     #User
     test "select all decks user" do
-        { status, decks } = selectAllByUser 1
+        { status, data } = select_all_by_user 1
         assert :ok == status
-        assert is_list decks
+        assert is_list data
+        assert not Enum.empty? data
     end
 
     test "select all decks user with no decks" do
-        { status, msg } = selectAllByUser 99
+        { status, data } = select_all_by_user 99
         assert :ok == status
-        assert :no_data == msg
+        assert [] == data
     end
 
     #Player

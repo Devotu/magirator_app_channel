@@ -4,6 +4,7 @@ defmodule PlayerStoreTest do
     import MagiratorAppChannel.PlayerStore
 
 
+    #Search
     test "search player" do
         { status, data } = search_by_name "Erik"
         assert :ok == status

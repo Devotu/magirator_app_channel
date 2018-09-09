@@ -15,6 +15,9 @@ defmodule MagiratorAppChannel.PlayerStore do
             (data:Data) 
          WHERE 
             data.name =~ "(?i)#{ name }.*" 
+         WITH 
+            p,data
+            LIMIT 10
          RETURN p,data
         """
 
