@@ -79,6 +79,29 @@ defmodule MagiratorAppChannel.DeckStore do
         end
     end
 
+    def select_all_by_player( player_id ) do
+
+        query = """
+        MATCH 
+         (p:Player)
+         -[:Possess]->
+         (d:Deck)
+         -[:Currently]->
+         (data:Data) 
+        WHERE 
+         p.id = #{ player_id } 
+        RETURN 
+         d, data
+        """
+
+        Logger.debug "query:#{query}"
+        
+        result = Bolt.query!(Bolt.conn, query)
+        decks = nodesToDecks result
+        
+        { :ok, decks }
+    end
+
 
     defp nodesToDecks( nodes ) do
         Enum.map( nodes, &nodeToDeck/1 )
