@@ -3,7 +3,7 @@ defmodule MagiratorAppChannelWeb.TokenController do
 
     alias MagiratorAppChannel.Auth
     alias MagiratorAppChannel.Encryption
-    alias MagiratorAppChannel.Constants
+    alias MagiratorAppChannel.Token
     require Logger
 
     
@@ -15,7 +15,7 @@ defmodule MagiratorAppChannelWeb.TokenController do
           {:ok, user_id} ->
             Logger.debug "auth ok user {#user_id}"
             
-            {:ok, token} = set_token user_id
+            {:ok, token} = Token.create_user_token user_id
             Logger.debug "{#token}"
 
             json conn, %{result: :ok, token: token}
@@ -28,21 +28,6 @@ defmodule MagiratorAppChannelWeb.TokenController do
 
     def new(conn, %{}) do 
         json conn, %{result: :error, cause: "no data"}
-    end
-
-    defp set_token(user_id) do
-    
-        {:ok, tokens_db} = Redix.start_link()
-        Redix.command(tokens_db, ["SELECT", Constants.token_db])
-    
-        token = Encryption.random_string_of_length Constants.token_length
-    
-        Redix.command(tokens_db, ["SET", token, "user_id:#{user_id}"])
-        Redix.command(tokens_db, ["EXPIRE", token, Constants.token_expiration])
-    
-        Redix.stop(tokens_db)
-    
-        {:ok, token}
     end
 
 end
