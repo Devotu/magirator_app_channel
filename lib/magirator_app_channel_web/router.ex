@@ -10,17 +10,13 @@ defmodule MagiratorAppChannelWeb.Router do
   end
 
   pipeline :api do
+    plug CORSPlug, origin: "http://localhost:4100"
     plug :accepts, ["json"]
   end
 
-  scope "/", MagiratorAppChannelWeb do
-    pipe_through :browser # Use the default browser stack
+  scope "/api", MagiratorAppChannelWeb do
+    pipe_through :api
 
-    get "/", PageController, :index
+    get "/token/:user/:pwd", TokenController, :new
   end
-
-  # Other scopes may use custom stacks.
-  # scope "/api", MagiratorAppChannelWeb do
-  #   pipe_through :api
-  # end
 end

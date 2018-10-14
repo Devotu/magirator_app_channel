@@ -38,7 +38,13 @@ defmodule MagiratorAppChannelWeb.UserSocket do
     end
   end
 
-  def connect(_params, _socket) do
+  # def connect(_params, socket) do
+  #   Logger.debug "connection parameter faked"
+  #   {:ok, assign(socket, :user_id, 9)}
+  # end
+
+  def connect(params, _socket) do
+    Logger.debug Kernel.inspect params
     Logger.debug "connection parameter error"
     :error
   end
