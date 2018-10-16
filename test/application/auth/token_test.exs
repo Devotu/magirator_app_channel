@@ -18,4 +18,10 @@ defmodule TokenTest do
         assert :ok == status
         assert 99 == id
     end
+    
+    test "verify token error" do
+        {status, msg} = Token.verify "xxx"
+        assert :error == status
+        assert :no_match == msg
+    end
 end

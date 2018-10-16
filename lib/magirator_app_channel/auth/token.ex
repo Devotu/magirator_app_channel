@@ -30,12 +30,18 @@ defmodule MagiratorAppChannel.Token do
         
         case result do 
             :ok ->
-                case Integer.parse value do
-                    {id, _} -> 
-                        {:ok, id}
-                    
+                case value do
+                    nil ->
+                        {:error, :no_match}
+
                     _ ->
-                        {:error, "could not parse value expected to be integer"}
+                        case Integer.parse value do
+                            {id, _} -> 
+                                {:ok, id}
+                            
+                            _ ->
+                                {:error, :parse}
+                        end
                 end
             
             _ -> 
