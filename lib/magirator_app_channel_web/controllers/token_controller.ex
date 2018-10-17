@@ -13,10 +13,10 @@ defmodule MagiratorAppChannelWeb.TokenController do
 
         case Auth.authenticate(user, pwd) do          
           {:ok, user_id} ->
-            Logger.debug "auth ok user {#user_id}"
+            Logger.debug "auth ok user #{user_id}"
             
             {:ok, token} = Token.create_user_token user_id
-            Logger.debug "{#token}"
+            Logger.debug "#{token}"
 
             json conn, %{result: :ok, token: token}
           
