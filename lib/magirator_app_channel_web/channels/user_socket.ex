@@ -22,23 +22,22 @@ defmodule MagiratorAppChannelWeb.UserSocket do
   # See `Phoenix.Token` documentation for examples in
   # performing token verification on connect.
 
-  def connect(%{"user" => user, "pwd" => pwd}, socket) do
+  def connect(%{"token" => token}, socket) do
 
-    Logger.debug "user:#{user}, pwd:#{pwd}"
+    Logger.debug "Socket: token:#{token}"
 
-    case Auth.authenticate(user, pwd) do
-      
-      {:ok, user_id} ->
-        Logger.debug "connection ok"        
+    case Token.verify token do
+      {:ok, user_id} ->        
+        Logger.debug "connection ok"
         {:ok, assign(socket, :user_id, user_id)}
-      
       _ ->
         Logger.debug "authentication error"
         :error
     end
   end
 
-  def connect(_params, _socket) do
+  def connect(params, _socket) do
+    Logger.debug Kernel.inspect params
     Logger.debug "connection parameter error"
     :error
   end

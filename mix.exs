@@ -39,7 +39,9 @@ defmodule MagiratorAppChannel.Mixfile do
       {:gettext, "~> 0.11"},
       {:cowboy, "~> 1.0"},
       {:bolt_sips, "~> 0.4.12"},
-      {:ecto, "~> 2.0"}
+      {:ecto, "~> 2.0"},
+      {:redix, "~> 0.8.1"},
+      {:cors_plug, "~> 1.5"}
     ]
   end
 end

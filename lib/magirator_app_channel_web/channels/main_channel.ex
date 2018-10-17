@@ -72,6 +72,8 @@ defmodule MagiratorAppChannelWeb.MainChannel do
     def handle_in(domain_action, data, socket) do        
         user_id = socket.assigns[:user_id]
 
+        Logger.debug "domac:#{domain_action}"
+
         [domain, action] = String.split(domain_action, ":")
 
         routing_packet = %RoutingPacket{ user_id: user_id, domain: domain, action: action, data_in: data }
