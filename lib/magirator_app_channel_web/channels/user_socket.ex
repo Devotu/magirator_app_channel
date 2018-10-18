@@ -1,6 +1,6 @@
 defmodule MagiratorAppChannelWeb.UserSocket do
   use Phoenix.Socket
-  alias MagiratorAppChannel.Auth
+  alias MagiratorAppChannel.Token
   require Logger
 
   ## Channels
