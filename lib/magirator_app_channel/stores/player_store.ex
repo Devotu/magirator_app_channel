@@ -6,6 +6,7 @@ defmodule MagiratorAppChannel.PlayerStore do
     require Logger
 
 
+    #Functions
     def search_by_name( name ) do
 
         query = """
@@ -18,7 +19,8 @@ defmodule MagiratorAppChannel.PlayerStore do
          WITH 
             p,data
             LIMIT 10
-         RETURN p,data
+         RETURN 
+            p,data
         """
 
         Logger.debug "query:#{query}"
@@ -30,6 +32,38 @@ defmodule MagiratorAppChannel.PlayerStore do
     end
 
 
+    def get_by_user_id( user_id ) do
+
+        query = """
+        MATCH 
+            (u:User) 
+            -[:Is]-> 
+            (p:Player) 
+            -[:Currently]-> 
+            (data:Data) 
+        WHERE 
+            u.id = #{user_id} 
+        RETURN 
+            p,data
+        """
+
+        Logger.debug "query:#{query}"
+        
+        result = Bolt.query!(Bolt.conn, query)
+        players = nodes_to_players result
+
+        case Enum.count players do
+            1 ->
+                Enum.fetch(players, 0)
+            0 ->
+                { :error, "no such user/player"}
+            _ ->
+                { :error, "invalid request"}
+        end
+    end
+
+
+    #Helpers
     defp nodes_to_players( nodes ) do
         Enum.map( nodes, &node_to_player/1 )
     end

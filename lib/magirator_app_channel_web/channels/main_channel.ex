@@ -7,18 +7,9 @@ defmodule MagiratorAppChannelWeb.MainChannel do
     require Logger
 
     def join("app:main", message, socket) do
-        Logger.debug "join:ok"
-        Logger.debug "app:#{message}"
-        {:ok, %{test: "joined"}, socket}
-    end
-
-    def join("app:" <> user, _params, socket) do
-        Logger.debug("Joining channel app:#{user}");
-        join(socket, socket.assigns.user_id)
-    end
-
-    defp join( socket, user_id ) when is_number(user_id) do
-        {:ok, %{}, socket}
+        Logger.debug "join app:main :ok"
+        Logger.debug Kernel.inspect socket.assigns[:user_id]
+        {:ok, %{id: socket.assigns[:user_id]}, socket}
     end
 
     defp join( _, nil ) do        
@@ -72,7 +63,9 @@ defmodule MagiratorAppChannelWeb.MainChannel do
     def handle_in(domain_action, data, socket) do        
         user_id = socket.assigns[:user_id]
 
-        Logger.debug "domac:#{domain_action}"
+        Logger.debug "user: #{user_id}"
+        Logger.debug "domac: #{domain_action}"
+        Logger.debug "data: #{Kernel.inspect(data)}"
 
         [domain, action] = String.split(domain_action, ":")
 
@@ -81,16 +74,20 @@ defmodule MagiratorAppChannelWeb.MainChannel do
         # kalla på domainrouter.route( domain, data ) och ta hand om response
         { status, msg } = route( routing_packet )
 
+        Logger.debug Kernel.inspect msg
+
         case status do
             :data ->
-                broadcast(socket, "data", %{data: msg, user_id: user_id, description: domain_action})
+                {:reply, {:ok, %{data: msg, description: domain_action}}, socket}
+                # broadcast(socket, "data", %{data: msg, user_id: user_id, description: domain_action})
             :ok ->
                 broadcast(socket, "new_msg", %{msg: msg, user_id: user_id, data: now()})
+                {:reply, :ok, socket}
             _ ->
                 broadcast(socket, "new_msg", %{msg: msg, user_id: user_id, data: now()})
+                {:reply, :error, socket}
         end
 
-        {:reply, :ok, socket}
     end
 
     defp now do
