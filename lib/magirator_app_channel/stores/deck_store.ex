@@ -10,6 +10,16 @@ defmodule MagiratorAppChannel.DeckStore do
 
         { :ok, generated_id } = next_id()
 
+        optionals = ""
+
+        if( deck.budget != nil ) do
+            optionals = optionals <> ",budget: #{ deck.budget }"
+        end
+
+        if( deck.worth != nil ) do
+            optionals = optionals <> ",worth: #{ deck.worth }"
+        end
+
         query = """
         MATCH   
          (a:User)-[:Is]->(p:Player)  
@@ -30,9 +40,8 @@ defmodule MagiratorAppChannel.DeckStore do
            red: #{ deck.red }, 
            green: #{ deck.green }, 
            blue: #{ deck.blue }, 
-           colorless: #{ deck.colorless }, 
-           budget: #{ deck.budget }, 
-           worth: #{ deck.worth } 
+           colorless: #{ deck.colorless }
+           #{optionals}
          })  
          RETURN n.id as id;
         """
