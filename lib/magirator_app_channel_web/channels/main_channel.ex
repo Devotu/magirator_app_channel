@@ -79,13 +79,10 @@ defmodule MagiratorAppChannelWeb.MainChannel do
         case status do
             :data ->
                 {:reply, {:ok, %{data: msg, description: domain_action}}, socket}
-                # broadcast(socket, "data", %{data: msg, user_id: user_id, description: domain_action})
             :ok ->
-                broadcast(socket, "new_msg", %{msg: msg, user_id: user_id, data: now()})
                 {:reply, :ok, socket}
             _ ->
-                broadcast(socket, "new_msg", %{msg: msg, user_id: user_id, data: now()})
-                {:reply, :error, socket}
+                {:reply, {:error, %{cause: msg}} , socket}
         end
 
     end
