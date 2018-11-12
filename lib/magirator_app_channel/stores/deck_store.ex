@@ -96,6 +96,30 @@ defmodule MagiratorAppChannel.DeckStore do
         { :ok, decks }
     end
 
+    def select_by_id( deck_id ) do
+
+        query = """
+        MATCH 
+         (d:Deck)-[:Currently]->(data:Data) 
+        WHERE 
+         d.id = #{ deck_id } 
+        RETURN 
+         d, data
+        """
+        
+        result = Bolt.query!(Bolt.conn, query)
+        decks = nodesToDecks result
+
+        case Enum.count decks do
+            1 ->
+                Enum.fetch(decks, 0)
+            0 ->
+                { :error, "no such user/player"}
+            _ ->
+                { :error, "invalid request"}
+        end
+    end
+
 
     defp nodesToDecks( nodes ) do
         Enum.map( nodes, &nodeToDeck/1 )

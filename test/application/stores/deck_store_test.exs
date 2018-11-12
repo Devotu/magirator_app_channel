@@ -47,10 +47,22 @@ defmodule DeckStoreTest do
         assert not Enum.empty? data
     end
 
-
     test "select all decks player with no decks" do
         { status, data } = select_all_by_player 99
         assert :ok == status
         assert [] == data
+    end
+
+    #Id
+    test "select deck by id" do
+        { status, data } = select_by_id 20
+        assert :ok == status
+        assert data.name == "Deck 1"
+    end
+
+    test "select deck not exist" do
+        { status, data } = select_by_id 99
+        assert :error == status
+        assert "no such user/player" == data
     end
 end
