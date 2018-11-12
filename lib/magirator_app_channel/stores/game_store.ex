@@ -12,7 +12,7 @@ defmodule MagiratorAppChannel.GameStore do
 
     alias MagiratorAppChannel.Streamliner
 
-    def selectAllByDeck( deck_id ) do
+    def select_all_by_deck( deck_id ) do
 
         Logger.debug Kernel.inspect deck_id
 
@@ -48,17 +48,17 @@ defmodule MagiratorAppChannel.GameStore do
         Logger.debug "query:#{query}"
         
         result = Bolt.query!(Bolt.conn, query)
-        gamesets = nodesToGameResultSets result
+        gamesets = nodes_to_game_result_sets result
 
         { :ok, gamesets }
     end
 
 
-    defp nodesToGameResultSets( nodes ) do
-        Enum.map( nodes, &nodeToGameResultSet/1 )
+    defp nodes_to_game_result_sets( nodes ) do
+        Enum.map( nodes, &node_to_game_result_set/1 )
     end
 
-    defp nodeToGameResultSet( node ) do
+    defp node_to_game_result_set( node ) do
 
         player_data = Map.merge( node["p"].properties, node["pd"].properties )
         player_changeset = Player.changeset( %Player{}, player_data )
