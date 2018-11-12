@@ -8,7 +8,7 @@ defmodule PlayerControllerTest do
     #Search
     test "search name" do
         routing_packet = %RoutingPacket{ user_id: 1, data_in: %{ "name" => "Erik" } }
-        { status, data } = doAction( "search", routing_packet )
+        { status, data } = do_action( "search", routing_packet )
         assert :data == status
         assert is_list data
         assert {:ok, _} = Enum.fetch data, 0
@@ -16,7 +16,7 @@ defmodule PlayerControllerTest do
 
     test "search name not found" do
         routing_packet = %RoutingPacket{ user_id: 1, data_in: %{ "name" => "Kent" } }
-        { status, data } = doAction( "search", routing_packet )
+        { status, data } = do_action( "search", routing_packet )
         assert :data == status
         assert is_list data #Should be list in any case
     end
@@ -25,7 +25,7 @@ defmodule PlayerControllerTest do
     #Decks
     test "get player decks" do
         routing_packet = %RoutingPacket{ user_id: 1, data_in: %{ "id" => 10 } }
-        { status, data } = doAction( "decks", routing_packet )
+        { status, data } = do_action( "decks", routing_packet )
         assert :data == status
         assert is_list data
     end
@@ -34,7 +34,7 @@ defmodule PlayerControllerTest do
     #Current
     test "get current player" do
         routing_packet = %RoutingPacket{ user_id: 1, data_in: %{} }
-        { status, data } = doAction( "current", routing_packet )
+        { status, data } = do_action( "current", routing_packet )
         assert :data == status
         assert !is_list data
         assert Map.has_key? data, :id

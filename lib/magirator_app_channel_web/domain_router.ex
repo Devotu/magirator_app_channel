@@ -15,13 +15,13 @@ defmodule MagiratorAppChannel.DomainRouter do
     defp _route( "deck", routing_packet ) do
         
         Logger.debug "doing deck action #{routing_packet.action}"
-        DeckController.doAction( routing_packet.action, routing_packet )
+        DeckController.do_action( routing_packet.action, routing_packet )
     end
 
     defp _route( "player", routing_packet ) do
         
         Logger.debug "doing player action #{routing_packet.action}"
-        PlayerController.doAction( routing_packet.action, routing_packet )
+        PlayerController.do_action( routing_packet.action, routing_packet )
     end
 
     defp _route( _domain, _packet ) do

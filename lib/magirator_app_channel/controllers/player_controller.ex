@@ -5,12 +5,12 @@ defmodule MagiratorAppChannel.PlayerController do
     alias MagiratorAppChannel.Streamliner
     require Logger
   
-    def doAction( action, data ) do
+    def do_action( action, data ) do
   
-      _doAction( action, data )
+      _do_action( action, data )
     end
   
-    defp _doAction( "search", routing_packet) do
+    defp _do_action( "search", routing_packet) do
       
       { :ok, store_result } = search_by_name routing_packet.data_in["name"]
 
@@ -20,7 +20,7 @@ defmodule MagiratorAppChannel.PlayerController do
     end
   
 
-    defp _doAction( "decks", routing_packet) do
+    defp _do_action( "decks", routing_packet) do
       
       { :ok, store_result } = DeckStore.select_all_by_player routing_packet.data_in["id"]
 
@@ -30,7 +30,7 @@ defmodule MagiratorAppChannel.PlayerController do
     end
 
 
-    defp _doAction( "current", routing_packet) do
+    defp _do_action( "current", routing_packet) do
       
       Logger.debug Kernel.inspect routing_packet.data_in
 

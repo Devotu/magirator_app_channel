@@ -7,12 +7,12 @@ defmodule MagiratorAppChannel.DeckController do
   alias MagiratorAppChannel.Streamliner
   require Logger
 
-  def doAction( action, data ) do
+  def do_action( action, data ) do
 
-    _doAction( action, data )
+    _do_action( action, data )
   end
 
-  defp _doAction( "create", routing_packet ) do
+  defp _do_action( "create", routing_packet ) do
 
     user_id = routing_packet.user_id
 
@@ -34,28 +34,28 @@ defmodule MagiratorAppChannel.DeckController do
 
   end
 
-  defp _doAction( "list", routing_packet) do
+  defp _do_action( "list", routing_packet) do
     
     { :ok, store_result } = select_all_by_user routing_packet.user_id
 
     { :data, Streamliner.changesetStructListToMapList store_result }
   end
 
-  defp _doAction( "show", routing_packet) do
+  defp _do_action( "show", routing_packet) do
 
     { :ok, store_result } = select_by_id routing_packet.data_in["deck_id"]
 
     { :data, Streamliner.changesetStructToMap store_result }
   end
 
-  defp _doAction( "games", routing_packet) do
+  defp _do_action( "games", routing_packet) do
     
     { :ok, store_result } = GameStore.selectAllByDeck routing_packet.data_in["deck_id"]
 
     { :data, Streamliner.changesetStructListToMapList store_result }
   end
 
-  defp _doAction( action, _ ) do
+  defp _do_action( action, _ ) do
 
     Logger.debug "No such action: #{action}"
     { :error, :no_such_action }
