@@ -7,14 +7,14 @@ defmodule GameStoreTest do
 
 
     test "select all games deck" do
-        { status, data } = selectAllByDeck 20
+        { status, data } = select_all_by_deck 20
         assert :ok == status
         assert is_list data
         assert %GameResultSet{} = List.first data
     end
 
     test "select all games from deck with no games" do
-        { status, msg } = selectAllByDeck 99
+        { status, msg } = select_all_by_deck 99
         assert :ok == status
         assert [] == msg
     end

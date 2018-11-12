@@ -16,7 +16,7 @@ defmodule MagiratorAppChannel.PlayerController do
 
       Logger.debug Kernel.inspect store_result
   
-      { :data, Streamliner.changesetStructListToMapList store_result }
+      { :data, Streamliner.changeset_struct_list_to_map_list store_result }
     end
   
 
@@ -26,7 +26,7 @@ defmodule MagiratorAppChannel.PlayerController do
 
       Logger.debug Kernel.inspect store_result
   
-      { :data, Streamliner.changesetStructListToMapList store_result }
+      { :data, Streamliner.changeset_struct_list_to_map_list store_result }
     end
 
 
@@ -38,6 +38,6 @@ defmodule MagiratorAppChannel.PlayerController do
 
       Logger.debug Kernel.inspect store_result
   
-      { :data, Streamliner.changesetStructToMap store_result }
+      { :data, Streamliner.changeset_struct_to_map store_result }
     end
 end

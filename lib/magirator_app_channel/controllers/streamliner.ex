@@ -1,20 +1,20 @@
 defmodule MagiratorAppChannel.Streamliner do
     
-    def changesetStructToMap( changeset_struct ) do
+    def changeset_struct_to_map( changeset_struct ) do
         
         changeset_struct
         |> Map.from_struct
         |> Map.delete( :__meta__ )
     end
     
-    def changesetStructListToMapList( {:ok, struct_list} ) do
+    def changeset_struct_list_to_map_list( {:ok, struct_list} ) do
         
-        changesetStructListToMapList struct_list
+        changeset_struct_list_to_map_list struct_list
     end
     
-    def changesetStructListToMapList( struct_list ) do
+    def changeset_struct_list_to_map_list( struct_list ) do
         
-        Enum.map( struct_list, &changesetStructToMap/1 )
+        Enum.map( struct_list, &changeset_struct_to_map/1 )
     end
 
 end

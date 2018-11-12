@@ -38,21 +38,21 @@ defmodule MagiratorAppChannel.DeckController do
     
     { :ok, store_result } = select_all_by_user routing_packet.user_id
 
-    { :data, Streamliner.changesetStructListToMapList store_result }
+    { :data, Streamliner.changeset_struct_list_to_map_list store_result }
   end
 
   defp _do_action( "show", routing_packet) do
 
     { :ok, store_result } = select_by_id routing_packet.data_in["deck_id"]
 
-    { :data, Streamliner.changesetStructToMap store_result }
+    { :data, Streamliner.changeset_struct_to_map store_result }
   end
 
   defp _do_action( "games", routing_packet) do
     
     { :ok, store_result } = GameStore.select_all_by_deck routing_packet.data_in["deck_id"]
 
-    { :data, Streamliner.changesetStructListToMapList store_result }
+    { :data, Streamliner.changeset_struct_list_to_map_list store_result }
   end
 
   defp _do_action( action, _ ) do

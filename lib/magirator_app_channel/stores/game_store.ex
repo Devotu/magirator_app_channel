@@ -88,6 +88,6 @@ defmodule MagiratorAppChannel.GameStore do
     defp apply_to_map( changeset ) do
         changeset
         |> apply_changes 
-        |> Streamliner.changesetStructToMap
+        |> Streamliner.changeset_struct_to_map
     end
 end
