@@ -7,7 +7,8 @@ defmodule MagiratorAppChannel.DomainRouter do
 
     def route( routing_packet ) do
 
-        Logger.debug "Routing to #{routing_packet.domain}"
+        Logger.debug "Routing to #{routing_packet.domain} with:"
+        Logger.debug Kernel.inspect routing_packet
 
         _route( routing_packet.domain, routing_packet )
     end
