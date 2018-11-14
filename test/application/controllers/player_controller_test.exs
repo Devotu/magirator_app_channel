@@ -4,6 +4,8 @@ defmodule PlayerControllerTest do
     import MagiratorAppChannel.PlayerController
     alias MagiratorAppChannel.RoutingPacket
 
+    alias MagiratorAppChannel.Player
+
 
     #Search
     test "search name" do
@@ -38,5 +40,16 @@ defmodule PlayerControllerTest do
         assert :data == status
         assert !is_list data
         assert Map.has_key? data, :id
+    end
+
+
+    #List
+    test "get player list" do
+        routing_packet = %RoutingPacket{ user_id: 1, data_in: %{} }
+        { status, data } = do_action( "list", routing_packet )
+        assert :data == status
+        assert is_list data
+        assert not Enum.empty? data
+        assert Enum.count(data) == 3
     end
 end

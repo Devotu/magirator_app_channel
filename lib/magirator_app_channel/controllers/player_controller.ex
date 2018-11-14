@@ -40,4 +40,16 @@ defmodule MagiratorAppChannel.PlayerController do
   
       { :data, Streamliner.changeset_struct_to_map store_result }
     end
+
+
+    defp _do_action( "list", routing_packet) do
+      
+      Logger.debug Kernel.inspect routing_packet.data_in
+
+      { :ok, store_result } = list_all()
+
+      Logger.debug Kernel.inspect store_result
+  
+      { :data, Streamliner.changeset_struct_list_to_map_list store_result }
+    end
 end

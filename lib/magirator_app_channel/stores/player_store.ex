@@ -63,6 +63,28 @@ defmodule MagiratorAppChannel.PlayerStore do
     end
 
 
+    def list_all() do
+
+        query = """
+        MATCH 
+            (u:User) 
+            -[:Is]-> 
+            (p:Player) 
+            -[:Currently]-> 
+            (data:Data) 
+        RETURN 
+            p,data
+        """
+
+        Logger.debug "query:#{query}"
+        
+        result = Bolt.query!(Bolt.conn, query)
+        players = nodes_to_players result
+
+        { :ok, players }
+    end
+
+
     #Helpers
     defp nodes_to_players( nodes ) do
         Enum.map( nodes, &node_to_player/1 )
