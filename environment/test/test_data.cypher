@@ -16,10 +16,10 @@ MATCH (a:Player) WHERE a.id = 10 CREATE (a)-[:Possess]->(n:Deck:Active { id:21 }
 MATCH (a:Player) WHERE a.id = 11 CREATE (a)-[:Possess]->(n:Deck:Active { id:22 })-[:Currently]->(d:Data {created:TIMESTAMP(), name:"Deck 3", format:"BOOSTER_HANDOVER", theme:"Testing", black:false, white:false, red:false, green:false, blue:false, colorless:false});
 MATCH (a:Player) WHERE a.id = 12 CREATE (a)-[:Possess]->(n:Deck:Active { id:23 })-[:Currently]->(d:Data {created:TIMESTAMP(), name:"Deck 4", format:"MODERN", theme:"Testing", black:false, white:false, red:true, green:false, blue:false, colorless:false});
 
-MATCH (a:Player) WHERE a.id = 11 CREATE (a)-[:Created]->(g:Game { id:40, created:TIMESTAMP(), end:"VICTORY" });
+MATCH (a:Player) WHERE a.id = 11 CREATE (a)-[:Created]->(g:Game { id:40, created:TIMESTAMP(), conclusion:"VICTORY" });
 MATCH (d:Deck), (g:Game) WHERE d.id = 20 AND g.id = 40 CREATE (d)-[:Got]->(r:Result { id:30, created:TIMESTAMP(), place:1, comment:"First result" })-[:In]->(g);
 MATCH (d:Deck), (g:Game) WHERE d.id = 22 AND g.id = 40 CREATE (d)-[:Got]->(r:Result { id:31, created:TIMESTAMP(), place:2, comment:"Second result" })-[:In]->(g);
 
-MATCH (a:Player) WHERE a.id = 12 CREATE (a)-[:Created]->(g:Game { id:41, created:TIMESTAMP(), end:"VICTORY" });
+MATCH (a:Player) WHERE a.id = 12 CREATE (a)-[:Created]->(g:Game { id:41, created:TIMESTAMP(), conclusion:"VICTORY" });
 MATCH (d:Deck), (g:Game) WHERE d.id = 20 AND g.id = 41 CREATE (d)-[:Got]->(r:Result { id:32, created:TIMESTAMP(), place:1, comment:"Third result" })-[:In]->(g);
 MATCH (d:Deck), (g:Game) WHERE d.id = 23 AND g.id = 41 CREATE (d)-[:Got]->(r:Result { id:33, created:TIMESTAMP(), place:2, comment:"Fourth result" })-[:In]->(g);

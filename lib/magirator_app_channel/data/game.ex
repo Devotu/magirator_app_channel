@@ -3,14 +3,15 @@ defmodule MagiratorAppChannel.Game do
     import Ecto.Changeset
 
     schema "game" do
-        field :end, :string
+        field :conclusion, :string
         field :created, :integer
+        field :creator, :integer
     end
 
     def changeset( game, params \\%{} ) do
         game
-        |> cast(params, [:id, :end, :created])
-        |> validate_required([:end])
+        |> cast(params, [:id, :conclusion, :created, :creator])
+        |> validate_required([:conclusion])
     end
 
 end

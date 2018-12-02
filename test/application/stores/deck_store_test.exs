@@ -1,9 +1,9 @@
 defmodule DeckStoreTest do
     use ExUnit.Case
 
+    import Ecto.Changeset
     import MagiratorAppChannel.DeckStore
     alias MagiratorAppChannel.Deck
-    import Ecto.Changeset
 
     #Insert
     test "insert deck" do

@@ -9,8 +9,39 @@ defmodule MagiratorAppChannel.GameStore do
     alias MagiratorAppChannel.Result
     alias MagiratorAppChannel.Game
     alias MagiratorAppChannel.GameResultSet
+    import MagiratorAppChannel.IdStore
 
     alias MagiratorAppChannel.Streamliner
+
+    @doc """
+    Creates a game node ready to tie the results together
+    A full registerd game contains several nodes of which the actual game node is the hub
+    """
+    def create( game ) do
+        
+        { :ok, generated_id } = next_id()
+
+        query = """
+        MATCH 
+          (u:User)-[:Is]->(p:Player) 
+         WHERE 
+          u.id = #{ game.creator } 
+         CREATE 
+          (p)-[:Created]->(g:Game { id:#{ generated_id }, created:TIMESTAMP(), conclusion: "#{ game.conclusion }" })
+         RETURN g.id as id;
+        """
+        
+        result = Bolt.query!(Bolt.conn, query)
+        [ row ] = result
+        { created_id } = { row["id"] }
+
+        case created_id == generated_id do
+            :true ->
+                { :ok, created_id }
+            :false ->
+                { :error, :insert_failure }
+        end
+    end
 
     def select_all_by_deck( deck_id ) do
 

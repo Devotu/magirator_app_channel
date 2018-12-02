@@ -4,8 +4,6 @@ defmodule PlayerControllerTest do
     import MagiratorAppChannel.PlayerController
     alias MagiratorAppChannel.RoutingPacket
 
-    alias MagiratorAppChannel.Player
-
 
     #Search
     test "search name" do

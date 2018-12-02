@@ -3,9 +3,24 @@ defmodule GameStoreTest do
 
     import MagiratorAppChannel.GameStore
 
+    import Ecto.Changeset
+    alias MagiratorAppChannel.Game
     alias MagiratorAppChannel.GameResultSet
 
+    #Insert
+    test "create game" do
+        game_changeset = Game.changeset( %Game{}, %{ 
+            "conclusion" => "VICTORY", 
+            "created" => System.system_time(:seconds), 
+            "creator" => 1} 
+            )
+        { status, id } = create( apply_changes( game_changeset ) )
+        assert :ok == status
+        assert is_number id
+    end
 
+
+    #Select
     test "select all games deck" do
         { status, data } = select_all_by_deck 20
         assert :ok == status

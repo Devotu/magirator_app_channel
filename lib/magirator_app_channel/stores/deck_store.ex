@@ -2,7 +2,7 @@ defmodule MagiratorAppChannel.DeckStore do
     
     alias Bolt.Sips, as: Bolt
     alias MagiratorAppChannel.Deck
-    import MagiratorAppChannel.IdStore    
+    import MagiratorAppChannel.IdStore
     import Ecto.Changeset
     require Logger
 
