@@ -23,7 +23,7 @@ defmodule MagiratorAppChannel.PlayerController do
 
 
     defp _do_action( "current", routing_packet) do      
-      { :ok, store_result } = get_by_user_id routing_packet.user_id  
+      { :ok, store_result } = select_by_user_id routing_packet.user_id  
       { :data, Streamliner.changeset_struct_to_map store_result }
     end
 

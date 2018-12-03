@@ -32,7 +32,7 @@ defmodule MagiratorAppChannel.PlayerStore do
     end
 
 
-    def get_by_user_id( user_id ) do
+    def select_by_user_id( user_id ) do
 
         query = """
         MATCH 
@@ -56,7 +56,7 @@ defmodule MagiratorAppChannel.PlayerStore do
     end
 
 
-    def get_by_deck_id( deck_id ) do
+    def select_by_deck_id( deck_id ) do
 
         query = """
         MATCH 

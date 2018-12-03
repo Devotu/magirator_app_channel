@@ -28,13 +28,13 @@ defmodule PlayerStoreTest do
     end
 
     test "get by user id" do
-        { status, data } = get_by_user_id 1
+        { status, data } = select_by_user_id 1
         assert :ok == status
         assert %Player{} = data
     end
 
     test "get by deck id" do
-        { status, data } = get_by_deck_id 20
+        { status, data } = select_by_deck_id 20
         assert :ok == status
         assert %Player{} = data
     end
