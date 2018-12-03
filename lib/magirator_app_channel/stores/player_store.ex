@@ -52,14 +52,31 @@ defmodule MagiratorAppChannel.PlayerStore do
         result = Bolt.query!(Bolt.conn, query)
         players = nodes_to_players result
 
-        case Enum.count players do
-            1 ->
-                Enum.fetch(players, 0)
-            0 ->
-                { :error, "no such user/player"}
-            _ ->
-                { :error, "invalid request"}
-        end
+        pick_one players
+    end
+
+
+    def get_by_deck_id( deck_id ) do
+
+        query = """
+        MATCH 
+            (d:Deck) 
+            <-[:Possess]- 
+            (p:Player) 
+            -[:Currently]-> 
+            (data:Data) 
+        WHERE 
+            d.id = #{deck_id} 
+        RETURN 
+            p,data
+        """
+
+        Logger.debug "query:#{query}"
+        
+        result = Bolt.query!(Bolt.conn, query)
+        players = nodes_to_players result
+
+        pick_one players
     end
 
 
@@ -100,6 +117,17 @@ defmodule MagiratorAppChannel.PlayerStore do
             apply_changes player_changeset
         else
             { :error, :invalid_data }
+        end
+    end
+
+    defp pick_one( players ) do
+        case Enum.count players do
+            1 ->
+                Enum.fetch(players, 0)
+            0 ->
+                { :error, "no such user/player"}
+            _ ->
+                { :error, "invalid request"}
         end
     end
 end

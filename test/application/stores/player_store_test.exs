@@ -27,6 +27,18 @@ defmodule PlayerStoreTest do
         assert is_list data #Should be list in any case
     end
 
+    test "get by user id" do
+        { status, data } = get_by_user_id 1
+        assert :ok == status
+        assert %Player{} = data
+    end
+
+    test "get by deck id" do
+        { status, data } = get_by_deck_id 20
+        assert :ok == status
+        assert %Player{} = data
+    end
+
 
     #List
     test "list players" do

@@ -135,17 +135,7 @@ defmodule MagiratorAppChannel.DeckStore do
     end
 
 
-    defp pick_one( decks ) do
-        case Enum.count decks do
-            1 ->
-                Enum.fetch(decks, 0)
-            0 ->
-                { :error, "no such user/player"}
-            _ ->
-                { :error, "invalid request"}
-        end
-    end
-
+    #Helpers
     defp nodesToDecks( nodes ) do
         Enum.map( nodes, &nodeToDeck/1 )
     end
@@ -160,6 +150,17 @@ defmodule MagiratorAppChannel.DeckStore do
             apply_changes deck_changeset
         else
             { :error, :invalid_data }
+        end
+    end
+
+    defp pick_one( decks ) do
+        case Enum.count decks do
+            1 ->
+                Enum.fetch(decks, 0)
+            0 ->
+                { :error, "no such user/player"}
+            _ ->
+                { :error, "invalid request"}
         end
     end
 end
