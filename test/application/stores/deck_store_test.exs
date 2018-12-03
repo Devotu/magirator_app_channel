@@ -65,4 +65,10 @@ defmodule DeckStoreTest do
         assert :error == status
         assert "no such user/player" == data
     end
+
+    test "pick my deck" do
+        { status, data } = pick_mine( 2, [20,21,22])
+        assert :ok == status
+        assert data.name == "Deck 3"
+    end
 end

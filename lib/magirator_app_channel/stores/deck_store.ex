@@ -96,6 +96,27 @@ defmodule MagiratorAppChannel.DeckStore do
         { :ok, decks }
     end
 
+    def pick_mine( user_id, deck_ids ) do
+
+        query = """
+        MATCH 
+          (u:User)
+          -[:Is]->(:Player)
+          -[:Possess]->(d:Deck)
+          -[:Currently]->(data:Data)
+         WHERE 
+          u.id = #{ user_id } 
+          AND d.id IN [20,21,22] 
+         RETURN 
+          d, data
+        """
+        
+        result = Bolt.query!(Bolt.conn, query)
+        decks = nodesToDecks result
+        
+        pick_one decks
+    end
+
     def select_by_id( deck_id ) do
 
         query = """
@@ -109,7 +130,12 @@ defmodule MagiratorAppChannel.DeckStore do
         
         result = Bolt.query!(Bolt.conn, query)
         decks = nodesToDecks result
+        
+        pick_one decks
+    end
 
+
+    defp pick_one( decks ) do
         case Enum.count decks do
             1 ->
                 Enum.fetch(decks, 0)
@@ -119,7 +145,6 @@ defmodule MagiratorAppChannel.DeckStore do
                 { :error, "invalid request"}
         end
     end
-
 
     defp nodesToDecks( nodes ) do
         Enum.map( nodes, &nodeToDeck/1 )
