@@ -106,7 +106,7 @@ defmodule MagiratorAppChannel.DeckStore do
           -[:Currently]->(data:Data)
          WHERE 
           u.id = #{ user_id } 
-          AND d.id IN [20,21,22] 
+          AND d.id IN #{ inspect(deck_ids) } 
          RETURN 
           d, data
         """
