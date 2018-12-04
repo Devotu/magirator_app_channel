@@ -43,6 +43,44 @@ defmodule MagiratorAppChannel.GameStore do
         end
     end
 
+    @doc """
+    Connects a single result to a given game node
+    """
+    def add_result( game_id, deck_id, result ) do
+        
+        { :ok, generated_id } = next_id()
+
+        query = """
+        MATCH 
+          (d:Deck), 
+          (g:Game) 
+         WHERE 
+          d.id = #{ deck_id } 
+          AND g.id = #{ game_id } 
+         CREATE 
+          (d)-[:Got]->
+          (r:Result { 
+              id: #{ generated_id }, 
+              created: TIMESTAMP(), 
+              place: #{ result.place }, 
+              comment: '#{ result.comment }' 
+            })
+          -[:In]->(g)
+         RETURN r.id as id;
+        """
+        
+        result = Bolt.query!(Bolt.conn, query)
+        [ row ] = result
+        { created_id } = { row["id"] }
+
+        case created_id == generated_id do
+            :true ->
+                { :ok, created_id }
+            :false ->
+                { :error, :insert_failure }
+        end
+    end
+
     def select_all_by_deck( deck_id ) do
 
         Logger.debug Kernel.inspect deck_id
