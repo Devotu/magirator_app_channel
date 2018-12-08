@@ -67,8 +67,8 @@ defmodule DeckStoreTest do
     end
 
     test "pick my deck" do
-        { status, data } = pick_mine( 2, [20,21,22])
+        { status, data } = pick_user_deck_id( 3, [20,21,23])
         assert :ok == status
-        assert data.name == "Deck 3"
+        assert data == 23
     end
 end

@@ -4,6 +4,7 @@ defmodule MagiratorAppChannel.DeckStore do
     alias MagiratorAppChannel.Deck
     import MagiratorAppChannel.IdStore
     import Ecto.Changeset
+    alias MagiratorAppChannel.Streamliner
     require Logger
 
     def insert( deck, user_id ) do
@@ -96,7 +97,7 @@ defmodule MagiratorAppChannel.DeckStore do
         { :ok, decks }
     end
 
-    def pick_mine( user_id, deck_ids ) do
+    def pick_user_deck_id( user_id, deck_ids ) do
 
         query = """
         MATCH 
@@ -113,8 +114,11 @@ defmodule MagiratorAppChannel.DeckStore do
         
         result = Bolt.query!(Bolt.conn, query)
         decks = nodesToDecks result
-        
-        pick_one decks
+
+        #TODO :error
+        {:ok, user_deck_changeset} = pick_one decks
+        user_deck = Streamliner.changeset_struct_to_map user_deck_changeset
+        {:ok, user_deck.id}
     end
 
     def select_by_id( deck_id ) do
