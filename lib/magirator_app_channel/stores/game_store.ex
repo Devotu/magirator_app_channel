@@ -46,9 +46,10 @@ defmodule MagiratorAppChannel.GameStore do
   @doc """
   Connects a single result to a given game node
   """
-  def add_result( game_id, deck_id, result ) do
+  def add_result( game_id, deck_id, result_cs ) do
     
     { :ok, generated_id } = next_id()
+    result_map = Streamliner.changeset_struct_to_map result_cs
 
     query = """
     MATCH 
@@ -62,8 +63,8 @@ defmodule MagiratorAppChannel.GameStore do
       (r:Result { 
         id: #{ generated_id }, 
         created: TIMESTAMP(), 
-        place: #{ result.place }, 
-        comment: '#{ result.comment }',
+        place: #{ result_map.place }, 
+        comment: '#{ result_map.comment }',
         confirmed: false
         })
       -[:In]->(g)

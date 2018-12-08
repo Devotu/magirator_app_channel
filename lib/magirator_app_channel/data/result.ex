@@ -6,11 +6,12 @@ defmodule MagiratorAppChannel.Result do
         field :place, :integer
         field :comment, :string
         field :created, :integer
+        field :confirmed, :boolean
     end
 
     def changeset( result, params \\%{} ) do
         result
-        |> cast(params, [:id, :place, :comment, :created])
+        |> cast(params, [:id, :place, :comment, :created, :confirmed])
         |> validate_required([:place])
     end
 
