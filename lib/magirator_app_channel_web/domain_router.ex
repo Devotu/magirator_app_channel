@@ -2,6 +2,7 @@ defmodule MagiratorAppChannel.DomainRouter do
 
     alias MagiratorAppChannel.DeckController
     alias MagiratorAppChannel.PlayerController
+    alias MagiratorAppChannel.GameController
     
     require Logger
 
@@ -14,17 +15,15 @@ defmodule MagiratorAppChannel.DomainRouter do
     end
 
     defp _route( "deck", routing_packet ) do
-        
-        Logger.debug "doing deck action #{routing_packet.action}"
         DeckController.do_action( routing_packet.action, routing_packet )
     end
 
     defp _route( "player", routing_packet ) do
-        
-        Logger.debug "doing player action #{routing_packet.action}"
+        PlayerController.do_action( routing_packet.action, routing_packet )
+    end
 
     defp _route( "game", routing_packet ) do
-        PlayerController.do_action( routing_packet.action, routing_packet )
+        GameController.do_action( routing_packet.action, routing_packet )
     end
 
     defp _route( _domain, _packet ) do

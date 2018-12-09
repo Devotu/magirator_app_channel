@@ -50,7 +50,7 @@ defmodule MagiratorAppChannel.GameController do
     {:ok, updated_id} = comment_result( user_result_id, routing_packet.data_in["comment"] )
     {:ok, updated_id} = confirm_result( user_result_id )
 
-    {:ok, game_id}
+    {:data, game_id}
   end
 
 

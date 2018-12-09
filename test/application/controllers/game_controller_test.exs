@@ -14,7 +14,7 @@ defmodule GameControllerTest do
           }
       }
       { status, game_id } = do_action( "create", routing_packet )
-      assert :ok == status
+      assert :data == status
       assert is_number game_id
   end
   

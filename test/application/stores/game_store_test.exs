@@ -61,27 +61,9 @@ defmodule GameStoreTest do
     result = apply_changes( result_changeset )
     { status_add, id } = add_result( id, 23, result )
     assert :ok == status_add
-
-    result_with_id_changeset = Result.changeset( %Result{}, %{ 
-      "id" => id,
-      "place" => result.place, 
-      "comment" => "GameStoreTest - confirm result"
-    })
-    result_with_id = apply_changes( result_with_id_changeset )
-    { status_confirm, _ } = confirm_result( result_with_id )
+    
+    { status_confirm, _ } = confirm_result( id )
     assert :ok == status_confirm
-  end
-
-  test "fail confirm result - no id" do
-    result_commented_changeset = Result.changeset( %Result{}, %{ 
-      "place" => 1, 
-      "comment" => "GameStoreTest - confirm result",
-      "created" => System.system_time(:seconds)
-    })
-    result_commented = apply_changes( result_commented_changeset )
-    { status, cause } = confirm_result( result_commented )
-    assert :error == status
-    assert :no_id == cause
   end
 
   
@@ -102,13 +84,7 @@ defmodule GameStoreTest do
     { status_add, id } = add_result( id, 23, result )
     assert :ok == status_add
 
-    result_with_id_changeset = Result.changeset( %Result{}, %{ 
-      "id" => id,
-      "place" => result.place, 
-      "comment" => "GameStoreTest - comment result"
-    })
-    result_with_id = apply_changes( result_with_id_changeset )
-    { status_comment, _ } = comment_result( result_with_id )
+    { status_comment, _ } = comment_result( id, "This is the comment" )
     assert :ok == status_comment
   end
 
