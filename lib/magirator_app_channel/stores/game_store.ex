@@ -83,67 +83,51 @@ defmodule MagiratorAppChannel.GameStore do
     end
   end
 
-  def confirm_result( result ) do
+  def confirm_result( result_id ) do
 
-    result_map = Streamliner.changeset_struct_to_map result
+    query = """
+    MATCH 
+      (r:Result)
+      WHERE 
+        r.id = #{ result_id } 
+      SET
+        r.confirmed = true
+      RETURN r.id as id;
+    """
+    
+    result = Bolt.query!(Bolt.conn, query)
+    [ row ] = result
+    { updated_id } = { row["id"] }
 
-    case result_map.id do
-      nil ->
-        {:error, :no_id}
-      _ ->
-
-        query = """
-        MATCH 
-          (r:Result)
-          WHERE 
-            r.id = #{ result_map.id } 
-          SET
-            r.confirmed = true
-          RETURN r.id as id;
-        """
-        
-        result = Bolt.query!(Bolt.conn, query)
-        [ row ] = result
-        { updated_id } = { row["id"] }
-
-        case updated_id == result_map.id do
-          :true ->
-            { :ok, updated_id }
-          :false ->
-            { :error, :update_failure }
-        end
+    case updated_id == result_id do
+      :true ->
+        { :ok, updated_id }
+      :false ->
+        { :error, :update_failure }
     end
   end
 
-  def comment_result( result ) do
+  def comment_result( result_id, result_comment ) do
 
-    result_map = Streamliner.changeset_struct_to_map result
+    query = """
+    MATCH 
+      (r:Result)
+      WHERE 
+        r.id = #{ result_id } 
+      SET
+        r.comment = '#{ result_comment }' 
+      RETURN r.id as id;
+    """
+    
+    result = Bolt.query!(Bolt.conn, query)
+    [ row ] = result
+    { updated_id } = { row["id"] }
 
-    case result_map.id do
-      nil ->
-        {:error, :no_id}
-      _ ->
-
-        query = """
-        MATCH 
-          (r:Result)
-          WHERE 
-            r.id = #{ result_map.id } 
-          SET
-            r.comment = '#{ result.comment }' 
-          RETURN r.id as id;
-        """
-        
-        result = Bolt.query!(Bolt.conn, query)
-        [ row ] = result
-        { updated_id } = { row["id"] }
-
-        case updated_id == result_map.id do
-          :true ->
-            { :ok, updated_id }
-          :false ->
-            { :error, :update_failure }
-        end
+    case updated_id == result_id do
+      :true ->
+        { :ok, updated_id }
+      :false ->
+        { :error, :update_failure }
     end
   end
 
