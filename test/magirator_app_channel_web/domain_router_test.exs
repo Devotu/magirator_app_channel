@@ -17,4 +17,12 @@ defmodule DomainRouterTest do
         assert :error == status
         assert :no_domain_match == msg
     end
+
+    test "route player" do
+        routing_packet = %RoutingPacket{ domain: "player", action: "list" }
+        { status, data } = route( routing_packet )
+        assert :data == status
+        assert is_list data
+        assert not Enum.empty? data
+    end
 end

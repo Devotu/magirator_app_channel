@@ -22,6 +22,8 @@ defmodule MagiratorAppChannel.DomainRouter do
     defp _route( "player", routing_packet ) do
         
         Logger.debug "doing player action #{routing_packet.action}"
+
+    defp _route( "game", routing_packet ) do
         PlayerController.do_action( routing_packet.action, routing_packet )
     end
 
