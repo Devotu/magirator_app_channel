@@ -67,9 +67,21 @@ defmodule MagiratorAppChannelWeb.MainChannel do
         Logger.debug "domac: #{domain_action}"
         Logger.debug "data: #{Kernel.inspect(data)}"
 
+        {given_self, data_in} = Map.pop(data, "self")
+
+        Logger.debug "given_self: #{given_self}"
+
+        data_in = 
+        case given_self do
+            nil ->
+                data_in
+            _ -> 
+                Map.put(data_in, "user_id", user_id)
+        end
+
         [domain, action] = String.split(domain_action, ":")
 
-        routing_packet = %RoutingPacket{ user_id: user_id, domain: domain, action: action, data_in: data }
+        routing_packet = %RoutingPacket{ user_id: user_id, domain: domain, action: action, data_in: data_in }
 
         # kalla på domainrouter.route( domain, data ) och ta hand om response
         { status, msg } = route( routing_packet )

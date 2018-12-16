@@ -23,7 +23,7 @@ defmodule GameControllerTest do
 #           user_id: 1, 
 #           data_in: %{
 #               "decks" => [21,-1],
-#               "conclusion" => "victory"
+#               "conclusion" => ""
 #           }
 #       }
 #       { status, msg } = do_action( "create", routing_packet )
