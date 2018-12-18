@@ -2,6 +2,7 @@ defmodule MagiratorAppChannelWeb.MainChannel do
     use Phoenix.Channel
 
     alias MagiratorAppChannel.RoutingPacket
+    alias MagiratorAppChannel.PlayerStore
     import MagiratorAppChannel.DomainRouter
 
     require Logger
@@ -76,7 +77,8 @@ defmodule MagiratorAppChannelWeb.MainChannel do
             nil ->
                 data_in
             _ -> 
-                Map.put(data_in, "user_id", user_id)
+                {:ok, user_player} = PlayerStore.select_by_user_id user_id
+                Map.put(data_in, "player_id", user_player.id)
         end
 
         [domain, action] = String.split(domain_action, ":")

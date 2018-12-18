@@ -35,7 +35,7 @@ defmodule MagiratorAppChannel.DeckController do
   end
 
   defp _do_action( "list", routing_packet) do    
-    { :ok, store_result } = select_all_by_user routing_packet.data_in["user_id"]
+    { :ok, store_result } = select_all_by_player routing_packet.data_in["player_id"]
     { :data, Streamliner.changeset_struct_list_to_map_list store_result }
   end
 

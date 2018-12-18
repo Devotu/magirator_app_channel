@@ -45,7 +45,7 @@ defmodule MagiratorAppChannel.GameController do
 
     #Find users own result, comment and confirm
     {:ok, user_deck_id} = DeckStore.pick_user_deck_id( user_id, deck_ids )
-    {user_deck_id, user_result_id} = Enum.find(added_results, fn {did, _rid} -> did == 23 end)
+    {user_deck_id, user_result_id} = Enum.find(added_results, fn {did, _rid} -> did == user_deck_id end)
 
     {:ok, updated_id} = comment_result( user_result_id, routing_packet.data_in["comment"] )
     {:ok, updated_id} = confirm_result( user_result_id )
