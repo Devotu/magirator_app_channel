@@ -34,7 +34,7 @@ defmodule MagiratorAppChannel.DeckStore do
          (d:Data {  
            created:TIMESTAMP(), 
            name: "#{ deck.name }", 
-           format: "#{ "Standard" }", 
+           format: "#{ deck.format }", 
            theme: "#{ deck.theme }", 
            black: #{ deck.black }, 
            white: #{ deck.white }, 
