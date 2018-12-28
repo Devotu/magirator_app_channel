@@ -167,15 +167,33 @@ defmodule MagiratorAppChannel.GameStore do
     Logger.debug "query:#{query}"
     
     result = Bolt.query!(Bolt.conn, query)
-    gamesets = nodes_to_game_result_sets result
+    gamesets = nodes_to_game_sets result
 
     { :ok, gamesets }
   end
 
 
-  defp nodes_to_game_result_sets( nodes ) do
-      Enum.map( nodes, &node_to_game_result_set/1 )
+  defp nodes_to_game_sets( nodes ) do
+    Enum.map( 
+      nodes, 
+      &node_to_game_result_map/1 
+    )
+    |> Enum.group_by( 
+      &(&1.game) 
+      )
+    |> Enum.to_list
+    |> Enum.map( 
+      fn({g,rs}) -> %{:game => g, :results => rs} end 
+      )
   end
+
+
+  defp node_to_game_result_map( node ) do
+
+    node_to_game_result_set( node )
+    |> Map.from_struct
+  end
+
 
   defp node_to_game_result_set( node ) do
 
