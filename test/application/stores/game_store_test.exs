@@ -94,7 +94,7 @@ defmodule GameStoreTest do
     { status, data } = select_all_by_deck 20
     assert :ok == status
     assert is_list data
-    assert %GameResultSet{} = List.first data
+    assert nil != List.first(data).game
   end
 
   test "select all games from deck with no games" do
