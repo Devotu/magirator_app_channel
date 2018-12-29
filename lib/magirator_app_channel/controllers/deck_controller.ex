@@ -5,7 +5,6 @@ defmodule MagiratorAppChannel.DeckController do
   alias MagiratorAppChannel.GameStore
   alias MagiratorAppChannel.Deck
   alias MagiratorAppChannel.Streamliner
-  require Logger
 
   def do_action( action, data ) do
 
@@ -49,8 +48,7 @@ defmodule MagiratorAppChannel.DeckController do
     { :data, store_result }
   end
 
-  defp _do_action( action, _ ) do
-    Logger.debug "No such action: #{action}"
+  defp _do_action( _, _ ) do
     { :error, :no_such_action }
   end
 

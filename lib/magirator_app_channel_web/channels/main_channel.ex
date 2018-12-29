@@ -7,7 +7,7 @@ defmodule MagiratorAppChannelWeb.MainChannel do
 
     require Logger
 
-    def join("app:main", message, socket) do
+    def join("app:main", _message, socket) do
         Logger.debug "join app:main :ok"
         Logger.debug Kernel.inspect socket.assigns[:user_id]
         {:ok, %{id: socket.assigns[:user_id]}, socket}

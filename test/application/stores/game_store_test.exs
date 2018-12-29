@@ -6,7 +6,6 @@ defmodule GameStoreTest do
   import Ecto.Changeset
   alias MagiratorAppChannel.Game
   alias MagiratorAppChannel.Result
-  alias MagiratorAppChannel.GameResultSet
 
   #Insert
   test "create game" do
