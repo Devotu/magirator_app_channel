@@ -1,13 +1,9 @@
 defmodule MagiratorAppChannel.GameController do
 
   import Ecto.Changeset
-  alias MagiratorAppChannel.GameStore
   alias MagiratorAppChannel.Game
   alias MagiratorAppChannel.Result
-  alias MagiratorAppChannel.GameResult
-  alias MagiratorAppChannel.Streamliner
   alias MagiratorAppChannel.DeckStore
-  alias MagiratorAppChannel.PlayerStore
   import MagiratorAppChannel.GameStore
   require Logger
 
@@ -45,12 +41,17 @@ defmodule MagiratorAppChannel.GameController do
 
     #Find users own result, comment and confirm
     {:ok, user_deck_id} = DeckStore.pick_user_deck_id( user_id, deck_ids )
-    {user_deck_id, user_result_id} = Enum.find(added_results, fn {did, _rid} -> did == user_deck_id end)
+    {_user_deck_id, user_result_id} = Enum.find(added_results, fn {did, _rid} -> did == user_deck_id end)
 
-    {:ok, updated_id} = comment_result( user_result_id, routing_packet.data_in["comment"] )
-    {:ok, updated_id} = confirm_result( user_result_id )
+    {:ok, _updated_id} = comment_result( user_result_id, routing_packet.data_in["comment"] )
+    {:ok, _updated_id} = confirm_result( user_result_id )
 
     {:data, game_id}
+  end
+
+  defp _do_action( action, _ ) do
+    Logger.debug "No such action: #{action}"
+    { :error, :no_such_action }
   end
 
 
@@ -70,12 +71,6 @@ defmodule MagiratorAppChannel.GameController do
         {:error, :unknown_error}
     end
   end
-
-  defp add_results( results ) do
-    Enum.with_index( deck_ids, 1 )
-    |> Enum.map( &create_result/1)
-  end
-
 
 
   defp create_deck_result( {deck_id, place} ) do
@@ -103,21 +98,6 @@ defmodule MagiratorAppChannel.GameController do
     |> apply_changes
 
     {deck_id, result}
-  end
-
-
-  defp _do_action( action, _ ) do
-    Logger.debug "No such action: #{action}"
-    { :error, :no_such_action }
-  end
-  
-
-  defp return_id( { :ok, id } ) do
-    { :ok, %{ id: id } }
-  end
-
-  defp return_id( { :error, msg } ) do
-    { :error, %{ error: msg } }
   end
 
 end
