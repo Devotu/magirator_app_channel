@@ -133,8 +133,6 @@ defmodule MagiratorAppChannel.GameStore do
 
   def select_all_by_deck( deck_id ) do
 
-    Logger.debug Kernel.inspect deck_id
-
     query = """
     MATCH 
       (d:Deck)
@@ -163,39 +161,32 @@ defmodule MagiratorAppChannel.GameStore do
     RETURN 
       g,d,p,r,pd,dd
     """
-
-    Logger.debug "query:#{query}"
     
     result = Bolt.query!(Bolt.conn, query)
-    gamesets = nodes_to_game_sets result
+
+    gamesets =
+      result
+      |> nodes_to_result_sets
+      |> group_results_by_game
+      |> exctract_associated( deck_id )
 
     { :ok, gamesets }
   end
 
 
-  defp nodes_to_game_sets( nodes ) do
+  defp nodes_to_result_sets( nodes ) do
     Enum.map( 
       nodes, 
-      &node_to_game_result_map/1 
+      &node_to_result_map/1 
     )
-    |> Enum.group_by( 
-      &(&1.game) 
-      )
-    |> Enum.to_list
-    |> Enum.map( 
-      fn({g,rs}) -> %{:game => g, :results => rs} end 
-      )
   end
 
-
-  defp node_to_game_result_map( node ) do
-
-    node_to_game_result_set( node )
+  defp node_to_result_map( node ) do
+    node_to_result_set( node )
     |> Map.from_struct
   end
 
-
-  defp node_to_game_result_set( node ) do
+  defp node_to_result_set( node ) do
 
     player_data = Map.merge( node["p"].properties, node["pd"].properties )
     player_changeset = Player.changeset( %Player{}, player_data )
@@ -226,5 +217,48 @@ defmodule MagiratorAppChannel.GameStore do
     changeset
     |> apply_changes 
     |> Streamliner.changeset_struct_to_map
+  end
+
+  defp group_results_by_game( result_sets ) do
+    Enum.group_by( 
+      result_sets,
+      &(&1.game) 
+    )
+    |> Enum.to_list
+    |> Enum.map( 
+      fn({g,rs}) -> %{
+        :game => g, 
+        :results => rs
+      } end 
+    )
+  end
+
+  defp exctract_associated( game_result_sets, deck_id ) do
+    Enum.map( 
+      game_result_sets, 
+      fn grs -> %{
+        :game => grs.game,
+        :associated => filter_deck_associated( grs.results, deck_id ),
+        :opponents => filter_deck_opponents( grs.results, deck_id )
+      } end
+    )
+  end
+
+  defp filter_deck_associated( results, deck_id ) do
+    Enum.find( 
+      results,
+      fn r -> 
+        r.deck.id == deck_id 
+      end
+    )
+  end
+
+  defp filter_deck_opponents( results, deck_id ) do
+    Enum.filter( 
+      results,
+      fn r -> 
+        r.deck.id != deck_id 
+      end
+    )
   end
 end

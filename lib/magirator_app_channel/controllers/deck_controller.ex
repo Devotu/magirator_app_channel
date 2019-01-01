@@ -43,8 +43,9 @@ defmodule MagiratorAppChannel.DeckController do
     { :data, Streamliner.changeset_struct_to_map store_result }
   end
 
-  defp _do_action( "games", routing_packet) do    
-    { :ok, store_result } = GameStore.select_all_by_deck routing_packet.data_in["deck_id"]
+  defp _do_action( "games", routing_packet) do
+    clean_deck_id = String.to_integer routing_packet.data_in["deck_id"]
+    { :ok, store_result } = GameStore.select_all_by_deck clean_deck_id
     { :data, store_result }
   end
 

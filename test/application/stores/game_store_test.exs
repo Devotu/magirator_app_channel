@@ -93,7 +93,15 @@ defmodule GameStoreTest do
     { status, data } = select_all_by_deck 20
     assert :ok == status
     assert is_list data
-    assert nil != List.first(data).game
+
+    %{
+      :game => _game,
+      :associated => associated,
+      :opponents => opponents
+    } = List.first(data)
+
+    assert is_list opponents
+    assert associated.deck.id == 20
   end
 
   test "select all games from deck with no games" do
